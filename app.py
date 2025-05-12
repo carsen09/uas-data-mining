@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import re
+
 
 # Load data yang dibutuhkan
 spend_distribution = pd.read_csv("spend_distribution.csv", index_col=0).iloc[:, 0]
@@ -80,6 +82,15 @@ Pengguna dapat memasukkan produk yang dibeli, dan sistem akan merekomendasikan p
     # **Inferensi Aturan Asosiasi**
     new_transaction = set(selected_products)
     matched_rules = rules[rules["antecedents"].apply(lambda x: set(eval(x)).issubset(new_transaction))]
+    
+    # bersihkan string set
+    def clean_frozenset(text):
+        cleaned_text = re.sub(r"frozenset\(\{(.*?)\}\)", r"[\1]", text)  # Ubah ke list format string
+        return cleaned_text.replace("'", '"')  # Ganti kutip tunggal ke kutip ganda
+
+    matched_rules["antecedents"] = matched_rules["antecedents"].apply(clean_frozenset)
+    matched_rules["consequents"] = matched_rules["consequents"].apply(clean_frozenset)
+    
 
     st.subheader("Rekomendasi Produk Berdasarkan Transaksi")
     st.markdown("""
