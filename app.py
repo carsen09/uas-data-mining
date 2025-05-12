@@ -9,7 +9,7 @@ rules = pd.read_csv("association_rules.csv")  # Pastikan file tersedia
 
 # Tambahkan gambar di sidebar
 st.sidebar.image(
-    "https://raw.githubusercontent.com/Leo42night/uas-data-mining/main/images/logo_v2.png",
+    "https://raw.githubusercontent.com/Leo42night/Leo42night/main/img/logo_shopmining.png",
     caption="[datamininguntan.my.id](https://datamininguntan.my.id/)"
 )
 
