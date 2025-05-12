@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load data yang dibutuhkan
-spend_distribution = pd.read_csv("spend_distribution.csv", index_col=0).iloc[:, 0]
-rules = pd.read_csv("association_rules.csv")  # Pastikan file tersedia
+spend_distribution = pd.read_csv("csv/spend_distribution.csv", index_col=0).iloc[:, 0]
+rules = pd.read_csv("csv/association_rules.csv")  # Pastikan file tersedia
 
 # Tambahkan gambar di sidebar
 st.sidebar.image(
-    "https://raw.githubusercontent.com/Leo42night/uas-data-mining/main/assets/logo_v2.png",
+    "https://raw.githubusercontent.com/Leo42night/uas-data-mining/main/images/logo_v2.png",
     caption="[datamininguntan.my.id](https://datamininguntan.my.id/)"
 )
 
@@ -19,7 +19,7 @@ Data Mining Online Service adalah layanan untuk memudahkan pengguna dalam melaku
 """)
 
 # **Buat Menu Navigasi di Sidebar**
-page = st.sidebar.selectbox("Pilih Halaman", ["Visualisasi", "Modelling"])
+page = st.sidebar.radio("Pilih Halaman", ["Visualisasi", "Modelling"])
 
 # ---------------------------------- HALAMAN VISUALISASI ----------------------------------
 if page == "Visualisasi":
@@ -35,7 +35,7 @@ if page == "Visualisasi":
     with col1:
         st.markdown("Distribusi Customer per Kategori")
         fig, ax = plt.subplots()
-        sns.barplot(x=spend_distribution.index, y=spend_distribution.values, palette="coolwarm", ax=ax)
+        sns.barplot(x=spend_distribution.index, y=spend_distribution.values, palette="coolwarm", ax=ax, hue=spend_distribution.index)
         ax.set_xlabel("Range Total Spend (IDR)")
         ax.set_ylabel("Jumlah Customer")
         ax.set_title("Distribusi Customer Berdasarkan Total Spend")

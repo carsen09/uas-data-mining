@@ -1,5 +1,6 @@
+-- 200r * 15c
 SELECT 
-    ROW_NUMBER() OVER() AS index_id,  -- Menambahkan indeks pada hasil
+    ROW_NUMBER() OVER() AS index_id,
     o.id AS order_id,
     o.status AS order_status,
     o.total_amount,
@@ -17,4 +18,25 @@ SELECT
 FROM wpkr_wc_orders o
 INNER JOIN wpkr_wc_customer_lookup c ON o.customer_id = c.customer_id
 LEFT JOIN wpkr_wc_order_addresses a ON o.id = a.order_id AND a.address_type = 'billing'
+LEFT JOIN wpkr_wc_order_product_lookup op ON o.id = op.order_id;
+
+-- 766r * 14c
+SELECT 
+    o.id AS order_id,
+    o.date_created_gmt as order_date,
+    o.ip_address,
+    o.total_amount,
+    c.customer_id,
+    c.first_name,
+    c.last_name,
+    c.email,
+    c.country,
+    c.city,
+    c.state,
+    oi.order_item_name,
+	 oi.order_item_type,
+    op.product_qty
+FROM wpkr_wc_orders o
+INNER JOIN wpkr_wc_customer_lookup c ON o.customer_id = c.customer_id
+INNER JOIN wpkr_woocommerce_order_items oi ON o.id = oi.order_id
 LEFT JOIN wpkr_wc_order_product_lookup op ON o.id = op.order_id;
