@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Load data yang dibutuhkan
-spend_distribution = pd.read_csv("csv/spend_distribution.csv", index_col=0).iloc[:, 0]
-rules = pd.read_csv("csv/association_rules.csv")  # Pastikan file tersedia
+spend_distribution = pd.read_csv("spend_distribution.csv", index_col=0).iloc[:, 0]
+rules = pd.read_csv("association_rules.csv")  # Pastikan file tersedia
 
 # Tambahkan gambar di sidebar
 st.sidebar.image(
@@ -36,6 +36,12 @@ if page == "Visualisasi":
         st.markdown("Distribusi Customer per Kategori")
         fig, ax = plt.subplots()
         sns.barplot(x=spend_distribution.index, y=spend_distribution.values, palette="coolwarm", ax=ax, hue=spend_distribution.index)
+
+        # Tambahkan label nominal pada masing-masing batang
+        for p in ax.patches:
+            ax.annotate(f'{int(p.get_height())}', 
+                        (p.get_x() + p.get_width() / 2, p.get_height()), 
+                        ha='center', va='bottom', fontsize=12, fontweight='bold', color='black')
         ax.set_xlabel("Range Total Spend (IDR)")
         ax.set_ylabel("Jumlah Customer")
         ax.set_title("Distribusi Customer Berdasarkan Total Spend")
@@ -45,8 +51,16 @@ if page == "Visualisasi":
     # **Pie Chart di kolom kedua**
     with col2:
         st.markdown("Persentase Customer per Kategori")
+
         fig = plt.figure(figsize=(6, 6))
-        plt.pie(spend_distribution, labels=spend_distribution.index, autopct="%1.1f%%", colors=sns.color_palette("coolwarm"))
+        plt.pie(
+            spend_distribution, 
+            labels=spend_distribution.index, 
+            autopct="%1.1f%%",
+            colors=sns.color_palette("coolwarm"),
+            labeldistance=1.2,  # Memindahkan label lebih jauh dari lingkaran
+            pctdistance=0.8  # Memindahkan persentase ke bagian dalam
+        )
         plt.title("Persentase Customer Berdasarkan Total Spend")
         plt.legend(spend_distribution.index, loc="best", bbox_to_anchor=(1, 1))
         st.pyplot(fig)
